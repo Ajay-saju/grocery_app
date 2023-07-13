@@ -3,16 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/data/grocery_data.dart';
+import 'package:grocery_app/data/models/cart_model.dart';
 import 'package:grocery_app/data/models/grocery_model_class.dart';
-import 'package:meta/meta.dart';
+import 'package:grocery_app/data/models/wishlist_model.dart';
 
 part 'home_bloc_event.dart';
 part 'home_bloc_state.dart';
 
 class HomeBlocBloc extends Bloc<HomeBlocEvent, HomeState> {
-  HomeBlocBloc() : super(HomeBlocInitial(
-    
-  )) {
+  HomeBlocBloc() : super(HomeBlocInitial()) {
     on<HomeInitialEvent>(homeInitialEvent);
     on<HomeProductWishListButtonClickedEvent>(
         homeProductWishListButtonClickedEvent);
@@ -39,11 +38,17 @@ class HomeBlocBloc extends Bloc<HomeBlocEvent, HomeState> {
   FutureOr<void> homeProductWishListButtonClickedEvent(
       HomeProductWishListButtonClickedEvent event, Emitter<HomeState> emit) {
     print('wish list button click');
+    //  i need to add a new item to the wish list .
+    wishListItems.add(event.wishListItems);
+    emit(HomeProductWishlistedActionState());
   }
 
   FutureOr<void> homeProductCartButtonClickedEvent(
       HomeProductCartButtonClickedEvent event, Emitter<HomeState> emit) {
     print('cart button click');
+
+    cartItems.add(event.cartItems);
+    emit(HomeProductCartedActionState());
   }
 
   FutureOr<void> homeProductWishListButtonNavigateEvent(

@@ -32,6 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (state is HomeNavigateToWishListPageActionState) {
           Navigator.push(context,
               MaterialPageRoute(builder: (ctx) => const WishListscreen()));
+        } else if (state is HomeProductCartedActionState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Item added to cart successfully ')));
+        } else if (state is HomeProductWishlistedActionState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Item added to WishList successfully ')));
         }
       },
       builder: (context, state) {
@@ -108,7 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    // homeBloc.add(HomeProductWishListButtonNavigateEvent());
+                                    homeBloc.add(
+                                        HomeProductWishListButtonClickedEvent(
+                                            wishListItems: successState
+                                                .groceryModel[index]));
                                   },
                                   icon:
                                       const Icon(Icons.favorite_border_rounded),
@@ -116,6 +125,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 IconButton(
                                     onPressed: () {
                                       // homeBloc.add(HomeProductCartButtonNavigateEvent());
+                                      homeBloc.add(
+                                          HomeProductCartButtonClickedEvent(
+                                              cartItems: successState
+                                                  .groceryModel[index]));
                                     },
                                     icon: const Icon(
                                       Icons.shopping_cart_outlined,
